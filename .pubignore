@@ -1,0 +1,5 @@
+# Files to exclude from pub.dev publishing
+.DS_Store
+**/.DS_Store
+pubspec.lock
+

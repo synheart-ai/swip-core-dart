@@ -1,11 +1,3 @@
-import 'dart:async';
-import 'wear_bridge.dart';
-import 'window_buffer.dart';
-import 'feature_extractor.dart';
-import 'model/model_factory.dart';
-import 'model/on_device_model.dart';
-import 'scorer.dart';
-
 class SWIPConfig {
   final int windowSeconds;
   final int stepSeconds;
@@ -21,51 +13,51 @@ class SWIPConfig {
   });
 }
 
-class SWIPManager {
-  final WearBridge _wear;
-  late final OnDeviceModel _model;
-  final _feature = FeatureExtractor();
-  final _scoresCtrl = StreamController<SwipScore>.broadcast();
-  StreamSubscription? _sub;
-  WindowBuffer<SwipSample>? _win;
+// class SWIPManager {
+//   final WearBridge _wear;
+//   late final OnDeviceModel _model;
+//   final _feature = FeatureExtractor();
+//   final _scoresCtrl = StreamController<SwipScore>.broadcast();
+//   StreamSubscription? _sub;
+//   WindowBuffer<SwipSample>? _win;
 
-  SWIPManager({WearBridge? wear}) : _wear = wear ?? WearBridge();
+//   SWIPManager({WearBridge? wear}) : _wear = wear ?? WearBridge();
 
-  Stream<SwipScore> get scores => _scoresCtrl.stream;
+//   Stream<SwipScore> get scores => _scoresCtrl.stream;
 
-  Future<void> initialize({SWIPConfig config = const SWIPConfig()}) async {
-    _win = WindowBuffer(
-      window: Duration(seconds: config.windowSeconds),
-      hop: Duration(seconds: config.stepSeconds),
-    );
-    _model = await ModelFactory.load(
-      backend: config.modelBackend,
-      modelRef: config.modelAssetPath,
-    );
-  }
+//   Future<void> initialize({SWIPConfig config = const SWIPConfig()}) async {
+//     _win = WindowBuffer(
+//       window: Duration(seconds: config.windowSeconds),
+//       hop: Duration(seconds: config.stepSeconds),
+//     );
+//     _model = await ModelFactory.load(
+//       backend: config.modelBackend,
+//       modelRef: config.modelAssetPath,
+//     );
+//   }
 
-  Future<void> start({SWIPConfig config = const SWIPConfig()}) async {
-    await _wear.requestPermissions();
-    await _wear.start();
+//   Future<void> start({SWIPConfig config = const SWIPConfig()}) async {
+//     await _wear.requestPermissions();
+//     await _wear.start();
 
-    _sub = _wear.watch().listen((s) async {
-      final w = _win!.push(s.ts, s, (x) => x.ts);
-      if (w == null) return;
-      final featureVector = _feature.toFeatures(w);
-      if (featureVector == null) {
-        return;
-      }
-      final p = await _model.predict(featureVector.values);
-      final score =
-          SwipScorer.fromProbability(p: p, features: featureVector.values, info: _model.info);
-      _scoresCtrl.add(score);
-    });
-  }
+//     _sub = _wear.watch().listen((s) async {
+//       final w = _win!.push(s.ts, s, (x) => x.ts);
+//       if (w == null) return;
+//       final featureVector = _feature.toFeatures(w);
+//       if (featureVector == null) {
+//         return;
+//       }
+//       final p = await _model.predict(featureVector.values);
+//       final score =
+//           SwipScorer.fromProbability(p: p, features: featureVector.values, info: _model.info);
+//       _scoresCtrl.add(score);
+//     });
+//   }
 
-  Future<void> stop() async {
-    await _sub?.cancel();
-    await _wear.stop();
-    await _scoresCtrl.close();
-    await _model.dispose();
-  }
-}
+//   Future<void> stop() async {
+//     await _sub?.cancel();
+//     await _wear.stop();
+//     await _scoresCtrl.close();
+//     await _model.dispose();
+//   }
+// }

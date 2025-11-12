@@ -11,7 +11,7 @@ class CoreMLIOS implements OnDeviceModel {
   ModelInfo get info => throw UnsupportedError('CoreML not enabled');
 
   @override
-  double predict(List<double> features) =>
+  Future<double> predict(List<double> features) =>
       throw UnsupportedError('CoreML backend not available');
 
   @override

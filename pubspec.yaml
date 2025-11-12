@@ -1,6 +1,8 @@
 name: swip_core
 description: SWIP Core - Scoring engine for the Synheart Wellness Impact Protocol
 version: 0.1.0
+homepage: https://github.com/synheart/swip
+repository: https://github.com/synheart/swip/tree/main/swip-core
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -8,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_onnxruntime: ^1.192.0
+  flutter_onnxruntime: ^1.5.2
 
 dev_dependencies:
   flutter_test:

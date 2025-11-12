@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'swip_score.dart';
 import 'swip_config.dart';
 import 'models.dart';
