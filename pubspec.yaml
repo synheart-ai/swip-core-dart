@@ -1,8 +1,8 @@
 name: swip_core
 description: SWIP Core - Scoring engine for the Synheart Wellness Impact Protocol
-version: 0.1.0
-homepage: https://github.com/synheart/swip
-repository: https://github.com/synheart/swip/tree/main/swip-core
+version: 0.1.0+4
+homepage: https://github.com/synheart-ai/
+repository: https://github.com/synheart-ai/swip-core
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
