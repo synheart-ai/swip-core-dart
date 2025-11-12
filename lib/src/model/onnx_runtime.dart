@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_onnxruntime/flutter_onnxruntime.dart';
 import 'on_device_model.dart';
@@ -56,13 +55,13 @@ class ONNXRuntimeModel implements OnDeviceModel {
   @override
   Future<double> predict(List<double> features) async {
     if (!_isLoaded) throw Exception('Model not loaded');
-    
+
     try {
       // Prepare input tensor
-      final inputName = _info.inputNames.first; // Assuming single input
+      final inputName = _info.inputSchema.first; // Assuming single input
       final inputShape = [1, features.length]; // Batch size 1
       final inputTensor = await OrtValue.fromList(features, inputShape);
-      
+
       // Run inference (this returns a Future)
       final inputs = {inputName: inputTensor};
       final outputs = await _session.run(inputs);
